@@ -3,6 +3,9 @@
 
 #define MAX_ATTEMPT 7
 
+int sieve_prime(int n);
+int linear_prime(int n);
+
 // uses sieve of eratosthenes to get prime number
 int sieve_prime(int n) {
 
@@ -14,6 +17,7 @@ int sieve_prime(int n) {
         nblock[i] = i + 2;
     }
 
+    // algorithm
     for (int i = 0; i < MAX_ATTEMPT; i++) {
         int base_primer = nblock[i];
 
@@ -24,7 +28,7 @@ int sieve_prime(int n) {
                 if (nblock[iv] != base_primer && nblock[iv] % base_primer == 0) {
                     nblock[iv] = 0;
                 }
-                
+
             }
         }
     } 
