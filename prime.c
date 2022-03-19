@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_ATTEMPT 7
+#define CH_PRIME 7
 
-int sieve_prime(int n);
+int* range_prime(int n);
 int linear_prime(int n);
 
-// uses sieve of eratosthenes to get prime number
-int sieve_prime(int n) {
+// uses sieve of eratosthenes to get prime numbers until n, returns pointer to array of n - 1 elements
+int* range_prime(int n) {
 
     int block_size = n - 1;
     int* nblock = (int*)malloc(sizeof(int) * block_size); // allocate memory
@@ -18,10 +18,10 @@ int sieve_prime(int n) {
     }
 
     // algorithm
-    for (int i = 0; i < MAX_ATTEMPT; i++) {
+    for (int i = 0; i < CH_PRIME; i++) {
         int base_primer = nblock[i];
-
-        if (base_primer != 0) {
+        
+        if (base_primer != 0 && i <= block_size) { // prevent overflow by checking index
             for (int iv = 0; iv < block_size; iv++) {
 
                 if (!(nblock[iv])) { continue; } // break iteration if index is 0
@@ -32,12 +32,8 @@ int sieve_prime(int n) {
             }
         }
     } 
-
-    int result = nblock[block_size - 1] ? 1 : 0; // get last int and return 1 or 0
-
-    free(nblock);
     
-    return result;
+    return nblock;
 }
 
 // get prime by linear iteration
@@ -55,6 +51,13 @@ int main(void) {
     scanf("%d", &prime);
 
     printf("%d\n", linear_prime(prime));
-    printf("%d", sieve_prime(prime));
+
+    int* arrptr = range_prime(prime); // get prime nums from 2 -> prime
+    for (int i = 0; i < prime - 1; i++) {
+        if (arrptr[i] == 0) { continue; }
+        printf("n: %d\n", arrptr[i]); // print list
+    }
+    free(arrptr);
+
     return 0;
 }
